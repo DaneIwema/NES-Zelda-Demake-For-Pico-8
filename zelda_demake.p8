@@ -29,12 +29,11 @@ function _draw()
     
     camera(cam_x, cam_y)
 
-    -- poke(512, 254)
-    -- sspr(0,0,128,32)
-
     map(0,0,0,0,18,18)
 end
 -->8
+
+-- code to directly sprite data for the room data into memory
 function load_sprites()
     for ind,sprite in pairs(sprites) do
         for i=0, 8, 1 do
@@ -42,11 +41,16 @@ function load_sprites()
         end
     end 
 end
+
+--code to inject the map of the room into memory
 function load_map()
     for i=0,17,1 do
         poke(8192+(128*i), unpack(room, i*32+1+(map_y*32)+map_x, i*32+18+(map_y*32)+map_x))
     end
 end
+
+--function for loading the map properly in an 18x18 square to save on map sheet resources
+--and to keep the camera in bounds of the room
 function check_map_boundry()
 
     if cam_x==17 and map_x!=14 then map_x+=1 cam_x=8 

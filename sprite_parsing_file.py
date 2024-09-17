@@ -1,11 +1,9 @@
 from PIL import Image
 
+#color library for pico-8 to know what color
 colors=[(0,0,0), (1,1,1), (1,1,1), (1,1,1), (200,76,12), (1,1,1), (116,116,116), (252,252,252), (1,1,1), (1,1,1), (1,1,1), (0,168,0), (32,56,236), (1,1,1), (1,1,1), (252,216,168)]
 
 img_sprites=[]
-
-#TODO
-#def rle_encode(data):
 
 #TODO
 #def huffman_encode(data):
@@ -31,8 +29,9 @@ def parse_sprites():
 def condense_sprites(sprites_data):
     return [[sprite[x + 1]<<4 | sprite[x] for x in range(0,64,2)] for sprite in sprites_data]
 
+#writing the data to the room file for pico-8 to read
 def write_to_file(f,map,sprites_data,num):
-    strg="levels = {"
+    strg="room = {"
     f.write(strg)
     for x in map:
         f.write(str(x+1))
@@ -46,6 +45,7 @@ def write_to_file(f,map,sprites_data,num):
         f.write("}, ")
     f.write("}\n")
 
+#control function to orderly parse and define data of the room number
 def parse_room(num):
     room = get_room(num)
     map = parse_map(room, num)
@@ -54,4 +54,6 @@ def parse_room(num):
     f = open("room.p8", "w")
     write_to_file(f,map,condensensed_sprites,num)
 
-parse_room(51)
+
+parse_room(int(input('Enter a room number 0-127: ')))
+print('Please reload Pico-8 to see the room!')
